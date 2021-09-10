@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AnonyCall</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="selected_call">Gọi chỉ định</string>
+    <string name="random_call">Gọi ngẫu nhiên</string>
+    <string name="login">Đăng nhập</string>
 </resources>
