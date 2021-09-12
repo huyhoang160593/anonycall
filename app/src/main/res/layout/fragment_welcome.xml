@@ -8,7 +8,7 @@
     tools:context=".fragments.WelcomeFragment">
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/selected_call_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp"
         android:text="@string/selected_call"/>
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/random_call_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="10dp"
         android:text="@string/random_call"/>
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/login_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"

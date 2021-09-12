@@ -5,4 +5,6 @@
     <string name="selected_call">Gọi chỉ định</string>
     <string name="random_call">Gọi ngẫu nhiên</string>
     <string name="login">Đăng nhập</string>
+    <string name="pref_speakerphone_key">speakerphone_preference</string>
+    <string name="pref_speakerphone_default">auto</string>
 </resources>
