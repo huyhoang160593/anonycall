@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.anonycall.R
 import com.example.anonycall.databinding.FragmentSelectedCallBinding
 import com.example.anonycall.databinding.FragmentWelcomeBinding
@@ -29,6 +30,8 @@ class SelectedCallFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Constants.isInitiatedNow = true
@@ -46,6 +49,8 @@ class SelectedCallFragment : Fragment() {
                                 meetingId.error = "Please enter new meeting ID"
                             } else {
                                 Toast.makeText(requireContext(),"Cuộc gọi mới được tạo với ID ${meetingId.text}",Toast.LENGTH_LONG).show()
+                                val action = SelectedCallFragmentDirections.actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),false)
+                                findNavController().navigate(action)
 //                                val intent = Intent(this@MainActivity, RTCActivity::class.java)
 //                                intent.putExtra("meetingID",meeting_id.text.toString())
 //                                intent.putExtra("isJoin",false)
@@ -62,6 +67,8 @@ class SelectedCallFragment : Fragment() {
                     meetingId.error = "Please enter meeting id"
                 else {
                     Toast.makeText(requireContext(),"Tham dự cuộc gọi với ID ${meetingId.text}",Toast.LENGTH_LONG).show()
+                    val action = SelectedCallFragmentDirections.actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),true)
+                    findNavController().navigate(action)
 //                    val intent = Intent(this@MainActivity, RTCActivity::class.java)
 //                    intent.putExtra("meetingID",meeting_id.text.toString())
 //                    intent.putExtra("isJoin",true)

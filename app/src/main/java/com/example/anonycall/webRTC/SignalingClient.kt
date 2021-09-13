@@ -13,6 +13,7 @@ import kotlin.coroutines.CoroutineContext
 
 private const val TAG = "SignallingClient"
 
+@ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class SignalingClient(
     private val meetingId: String,
@@ -37,7 +38,7 @@ class SignalingClient(
         db.enableNetwork().addOnSuccessListener {
             listener.onConnectionEstablished()
         }
-        val sendData = sendChannel.trySend("").isSuccess
+//        val sendData = sendChannel.send("")
         try {
             db.collection("calls")
                 .document(meetingId)

@@ -20,5 +20,20 @@
         android:id="@+id/selectedCallFragment"
         android:name="com.example.anonycall.fragments.SelectedCallFragment"
         android:label="fragment_selected_call"
-        tools:layout="@layout/fragment_selected_call" />
+        tools:layout="@layout/fragment_selected_call" >
+        <action
+            android:id="@+id/action_selectedCallFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="com.example.anonycall.fragments.CallFragment"
+        android:label="CallFragment" >
+        <argument
+            android:name="meetingId"
+            app:argType="string" />
+        <argument
+            android:name="isJoin"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

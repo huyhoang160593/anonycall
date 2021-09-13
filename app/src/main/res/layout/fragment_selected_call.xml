@@ -10,7 +10,8 @@
         android:id="@+id/image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/webrtc" />
     <com.google.android.material.card.MaterialCardView
@@ -28,7 +29,7 @@
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 style="@style/TextAppearance.AppCompat.Large"
-                android:text="GỌI LỰA CHỌN"
+                android:text="GỌI THEO ID"
                 android:elevation="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
