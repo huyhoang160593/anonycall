@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/anonycall_icon" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinputlayout_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black_overlay"
+            app:boxStrokeColor="#61C43C00"
+            app:boxStrokeErrorColor="@color/errorRed"
+            app:endIconTint="#99C43C00"
+            app:errorTextColor="@color/errorRed"
+            app:hintTextColor="#99C43C00"
+            app:startIconDrawable="@drawable/ic_baseline_face_24">
+
+            <EditText
+                android:id="@+id/display_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Nhập tên bạn muốn hiển thị"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/nickname_hint"
+                android:inputType="textPersonName"
+                android:textColor="@color/primaryTextColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinputlayout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black_overlay"
+            app:boxStrokeColor="#61C43C00"
+            app:boxStrokeErrorColor="@color/errorRed"
+            app:endIconTint="#99C43C00"
+            app:errorTextColor="@color/errorRed"
+            app:hintTextColor="#99C43C00"
+            app:startIconDrawable="@drawable/ic_baseline_email_24">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Nhập đúng email"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/primaryTextColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinputlayout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black_overlay"
+            app:boxStrokeColor="#61C43C00"
+            app:boxStrokeErrorColor="@color/errorRed"
+            app:errorTextColor="@color/errorRed"
+            app:hintTextColor="#99C43C00"
+            app:startIconDrawable="@drawable/ic_baseline_lock_24">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/prompt_password"
+                android:inputType="textPassword"
+                android:textColor="@color/primaryTextColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinputlayout_re_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black_overlay"
+            app:boxStrokeColor="#61C43C00"
+            app:boxStrokeErrorColor="@color/errorRed"
+            app:errorTextColor="@color/errorRed"
+            app:hintTextColor="#99C43C00"
+            app:startIconDrawable="@drawable/ic_baseline_lock_24">
+
+            <EditText
+                android:id="@+id/re_type_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/re_password"
+                android:inputType="textPassword"
+                android:textColor="@color/primaryTextColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_up_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/secondaryDarkColor"
+            android:text="@string/signup"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:backgroundTint="@android:color/transparent"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            android:text="@string/already_have_user"
+            android:textAllCaps="false"
+            android:textColor="@color/secondaryDarkColor"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

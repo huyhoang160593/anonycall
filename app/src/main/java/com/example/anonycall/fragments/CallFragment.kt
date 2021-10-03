@@ -13,17 +13,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.navigation.fragment.findNavController
+import com.example.anonycall.MainActivity
 import com.example.anonycall.R
 import com.example.anonycall.databinding.FragmentCallBinding
-import com.example.anonycall.models.AppSdpObserver
-import com.example.anonycall.models.PeerConnectionObserver
-import com.example.anonycall.models.SignalingClientListener
+import com.example.anonycall.webRTC.AppSdpObserver
+import com.example.anonycall.webRTC.PeerConnectionObserver
+import com.example.anonycall.webRTC.SignalingClientListener
 import com.example.anonycall.utils.Constants
 import com.example.anonycall.webRTC.RTCAudioManager
 import com.example.anonycall.webRTC.RTCClient
 import com.example.anonycall.webRTC.SignalingClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.withContext
 import org.webrtc.*
 
 private const val TAG = "MainActivity"
@@ -54,13 +58,15 @@ class CallFragment : Fragment() {
 
     private var inSpeakerMode = true
 
-    private val sdpObserver = object : AppSdpObserver(){
-
-    }
+    private val sdpObserver = object : AppSdpObserver(){}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //hiding bottom nav
+        (activity as MainActivity).hidingBottomNavigation(status = true)
+
         arguments?.let {
             meetingID = it.getString("meetingId").toString()
             isJoin = it.getBoolean("isJoin")
@@ -73,7 +79,6 @@ class CallFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCallBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 
@@ -122,8 +127,6 @@ class CallFragment : Fragment() {
                 binding.remoteView.isGone = false
                 Constants.isCallEnded = true
                 requireActivity().onBackPressed()
-                //TODO navigate to the main fragment
-//                startActivity(Intent(this@RTCActivity, MainActivity::class.java))
             }
         }
     }
@@ -183,7 +186,7 @@ class CallFragment : Fragment() {
                     Log.e(TAG, "onTrack: $transceiver" )
                 }
             }
-        )
+        ,false)
 
         rtcClient.initSurfaceView(binding.remoteView)
         rtcClient.initSurfaceView(binding.localView)
@@ -220,7 +223,6 @@ class CallFragment : Fragment() {
                 Constants.isCallEnded = true
                 rtcClient.endCall(meetingID)
                 requireActivity().onBackPressed()
-//                startActivity(Intent(this@RTCActivity, MainActivity::class.java))
             }
         }
     }
@@ -261,6 +263,9 @@ class CallFragment : Fragment() {
         Toast.makeText(requireContext(), "Camera and Audio Permission Denied", Toast.LENGTH_LONG).show()
     }
 
+    private fun returnToWelcomeFragment() {
+        findNavController().navigate(CallFragmentDirections.actionCallFragmentToWelcomeFragment())
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         signallingClient.destroy()

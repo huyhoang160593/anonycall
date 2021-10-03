@@ -15,6 +15,12 @@
             app:destination="@id/selectedCallFragment"
             app:launchSingleTop="false"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_randomCall"
+            app:destination="@id/randomCall" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_randomChatFragment"
+            app:destination="@id/randomChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectedCallFragment"
@@ -28,12 +34,107 @@
     <fragment
         android:id="@+id/callFragment"
         android:name="com.example.anonycall.fragments.CallFragment"
-        android:label="CallFragment" >
+        android:label="CallFragment"
+        tools:layout="@layout/fragment_call">
         <argument
             android:name="meetingId"
             app:argType="string" />
         <argument
             android:name="isJoin"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_callFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/randomCall"
+        android:name="com.example.anonycall.fragments.RandomCall"
+        android:label="fragment_random_call"
+        tools:layout="@layout/fragment_random_call" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.anonycall.fragments.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/randomChatFragment"
+        android:name="com.example.anonycall.fragments.RandomChatFragment"
+        android:label="RandomChatFragment"
+        tools:layout="@layout/random_chat_fragment"/>
+    <fragment
+        android:id="@+id/userManagementFragment"
+        android:name="com.example.anonycall.fragments.UserManagementFragment"
+        android:label="user_management_fragment"
+        tools:layout="@layout/user_management_fragment" >
+        <action
+            android:id="@+id/action_userManagementFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userManagementFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_userManagementFragment_to_avatarChangeFragment"
+            app:destination="@id/avatarChangeFragment" />
+        <action
+            android:id="@+id/action_userManagementFragment_to_changeDetailFragment"
+            app:destination="@id/changeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.anonycall.fragments.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/sign_up_fragment">
+        <action
+            android:id="@+id/action_signUpFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.anonycall.fragments.ChangePasswordFragment"
+        android:label="change_password_fragment"
+        tools:layout="@layout/change_password_fragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/avatarChangeFragment"
+        android:name="com.example.anonycall.fragments.AvatarChangeFragment"
+        android:label="AvatarChangeFragment"
+        tools:layout="@layout/avatar_change_fragment">
+        <action
+            android:id="@+id/action_avatarChangeFragment_to_userManagementFragment"
+            app:destination="@id/userManagementFragment"
+            app:popUpTo="@id/userManagementFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeDetailFragment"
+        android:name="com.example.anonycall.fragments.ChangeDetailFragment"
+        android:label="ChangeDetailFragment"
+        tools:layout="@layout/change_detail_fragment">
+        <action
+            android:id="@+id/action_changeDetailFragment_to_userManagementFragment"
+            app:destination="@id/userManagementFragment"
+            app:popUpTo="@id/userManagementFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

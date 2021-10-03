@@ -358,7 +358,7 @@ class RTCAudioManager(private val appRTCContext: Context) {
             }
         }
         // Store state which is set to true if the device list has changed.
-        var audioDeviceSetUpdated = audioDevices != newAudioDevices
+        val audioDeviceSetUpdated = audioDevices != newAudioDevices
         // Update the existing audio device set.
         audioDevices = newAudioDevices
         // Correct user selected audio devices if needed.

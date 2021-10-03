@@ -3,6 +3,10 @@ package com.example.anonycall.webRTC
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.example.anonycall.models.Answer
+import com.example.anonycall.models.Offer
+import com.example.anonycall.services.RandomCallService
+import com.example.anonycall.utils.Constants
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.webrtc.*
@@ -11,7 +15,8 @@ private const val TAG = "RTCClient"
 
 class RTCClient (
     context: Application,
-    observer: PeerConnection.Observer
+    observer: PeerConnection.Observer,
+    isRandomCall: Boolean
 ){
     companion object {
         private const val LOCAL_TRACK_ID = "local_track"
@@ -25,7 +30,9 @@ class RTCClient (
 
     var remoteSessionDescription : SessionDescription? = null
 
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
+
+    private val collection = if(isRandomCall) "random_calls" else "calls"
 
     init {
         initPeerConnectionFactory(context)
@@ -109,18 +116,16 @@ class RTCClient (
                     }
 
                     override fun onSetSuccess() {
-                        val offer = hashMapOf(
-                            "sdp" to desc?.description,
-                            "type" to desc?.type
-                        )
-                        db.collection("calls").document(meetingID)
-                            .set(offer)
-                            .addOnSuccessListener {
-                                Log.e(TAG, "DocumentSnapshot added")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e(TAG, "Error adding document", e)
-                            }
+                        val newOffer = desc?.let {
+                            Offer(it.description,it.type)
+                        }
+                        if(newOffer != null) {
+                            RandomCallService.addOffer(
+                                collection = collection,
+                                meetingId = meetingID,
+                                offer = newOffer
+                            )
+                        }
                         Log.e(TAG, "onSetSuccess")
                     }
 
@@ -151,18 +156,12 @@ class RTCClient (
         }
         createAnswer(object : SdpObserver by sdpObserver {
             override fun onCreateSuccess(desc: SessionDescription?) {
-                val answer = hashMapOf(
-                    "sdp" to desc?.description,
-                    "type" to desc?.type
+                val newAnswer = Answer(desc!!.description, desc.type)
+                RandomCallService.addAnswer(
+                    collection = collection,
+                    meetingId = meetingID,
+                    answer = newAnswer
                 )
-                db.collection("calls").document(meetingID)
-                    .set(answer)
-                    .addOnSuccessListener {
-                        Log.e(TAG, "DocumentSnapshot added")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e(TAG, "Error adding document", e)
-                    }
                 setLocalDescription(object : SdpObserver {
                     override fun onSetFailure(p0: String?) {
                         Log.e(TAG, "onSetFailure: $p0")
@@ -220,16 +219,26 @@ class RTCClient (
     }
 
     fun endCall(meetingID: String) {
-        db.collection("calls").document(meetingID).collection("candidates")
+        db.collection(collection).document(meetingID).collection("candidates")
             .get().addOnSuccessListener {
                 val iceCandidateArray: MutableList<IceCandidate> = mutableListOf()
                 for ( dataSnapshot in it) {
                     if (dataSnapshot.contains("type") && dataSnapshot["type"]=="offerCandidate") {
-                        val offerCandidate = dataSnapshot
-                        iceCandidateArray.add(IceCandidate(offerCandidate["sdpMid"].toString(), Math.toIntExact(offerCandidate["sdpMLineIndex"] as Long), offerCandidate["sdp"].toString()))
+                        iceCandidateArray.add(
+                            IceCandidate(
+                                dataSnapshot["sdpMid"].toString(),
+                                Math.toIntExact(dataSnapshot["sdpMLineIndex"] as Long),
+                                dataSnapshot["sdp"].toString()
+                            )
+                        )
                     } else if (dataSnapshot.contains("type") && dataSnapshot["type"]=="answerCandidate") {
-                        val answerCandidate = dataSnapshot
-                        iceCandidateArray.add(IceCandidate(answerCandidate["sdpMid"].toString(), Math.toIntExact(answerCandidate["sdpMLineIndex"] as Long), answerCandidate["sdp"].toString()))
+                        iceCandidateArray.add(
+                            IceCandidate(
+                                dataSnapshot["sdpMid"].toString(),
+                                Math.toIntExact(dataSnapshot["sdpMLineIndex"] as Long),
+                                dataSnapshot["sdp"].toString()
+                            )
+                        )
                     }
                 }
                 peerConnection?.removeIceCandidates(iceCandidateArray.toTypedArray())
@@ -237,7 +246,7 @@ class RTCClient (
         val endCall = hashMapOf(
             "type" to "END_CALL"
         )
-        db.collection("calls").document(meetingID)
+        db.collection(collection).document(meetingID)
             .set(endCall)
             .addOnSuccessListener {
                 Log.e(TAG, "DocumentSnapshot added")

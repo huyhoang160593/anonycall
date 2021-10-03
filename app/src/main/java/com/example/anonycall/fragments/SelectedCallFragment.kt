@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.example.anonycall.MainActivity
 import com.example.anonycall.R
 import com.example.anonycall.databinding.FragmentSelectedCallBinding
 import com.example.anonycall.databinding.FragmentWelcomeBinding
@@ -21,6 +22,13 @@ class SelectedCallFragment : Fragment() {
     //Gọi Firebase Database
     private val db = Firebase.firestore
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //hiding bottom nav
+        (activity as MainActivity).hidingBottomNavigation(status = true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +37,6 @@ class SelectedCallFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding.root
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,12 +56,9 @@ class SelectedCallFragment : Fragment() {
                                 meetingId.error = "Please enter new meeting ID"
                             } else {
                                 Toast.makeText(requireContext(),"Cuộc gọi mới được tạo với ID ${meetingId.text}",Toast.LENGTH_LONG).show()
-                                val action = SelectedCallFragmentDirections.actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),false)
+                                val action = SelectedCallFragmentDirections
+                                    .actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),false)
                                 findNavController().navigate(action)
-//                                val intent = Intent(this@MainActivity, RTCActivity::class.java)
-//                                intent.putExtra("meetingID",meeting_id.text.toString())
-//                                intent.putExtra("isJoin",false)
-//                                startActivity(intent)
                             }
                         }
                         .addOnFailureListener {
@@ -67,12 +71,9 @@ class SelectedCallFragment : Fragment() {
                     meetingId.error = "Please enter meeting id"
                 else {
                     Toast.makeText(requireContext(),"Tham dự cuộc gọi với ID ${meetingId.text}",Toast.LENGTH_LONG).show()
-                    val action = SelectedCallFragmentDirections.actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),true)
+                    val action = SelectedCallFragmentDirections
+                        .actionSelectedCallFragmentToCallFragment(meetingId.text.toString(),true)
                     findNavController().navigate(action)
-//                    val intent = Intent(this@MainActivity, RTCActivity::class.java)
-//                    intent.putExtra("meetingID",meeting_id.text.toString())
-//                    intent.putExtra("isJoin",true)
-//                    startActivity(intent)
                 }
             }
         }

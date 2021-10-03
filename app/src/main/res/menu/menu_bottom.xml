@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/welcomeFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/home_navigation_text">
+    </item>
+    <item
+        android:id="@+id/userManagementFragment"
+        android:icon="@drawable/ic_baseline_face_24"
+        android:title="@string/user_navigation_text">
+    </item>
+</menu>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AnonyCall</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -10,4 +10,42 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_call">CallActivity</string>
+    <string name="mic_button">Mic On/Off</string>
+    <string name="local_video_button">Local Video On/Off</string>
+    <string name="end_call_button">End Call</string>
+    <string name="camera_switch_button">Camera Switch</string>
+    <string name="audio_output_button">Audio Output Change</string>
+
+    <string name="anony_web_client_id" tools:ignore="TypographyDashes">849450959143-0845co6s8tc265hj5svdq8abeav64nb2.apps.googleusercontent.com</string>
+
+    <!--    Old String to be replace-->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+    <!--    Login string-->
+    <string name="email_err">Enter an email!</string>
+    <string name="pass_err">Cần ít nhất 6 ký tự!</string>
+    <string name="nickname_err">Tên không được để trống!</string>
+    <string name="repassword_err">Password nhập lại không trùng khớp!</string>
+    <string name="phone_err">Invalid phone number!</string>
+    <string name="otp_err">Enter OTP code!</string>
+    <string name="resend_otp">Didn\'t get OTP? <b>Resend</b></string>
+    <string name="create_new">Chưa có tài khoản? <b>Tạo mới!</b></string>
+    <string name="signout">Đăng xuất</string>
+    <string name="random_chat">Chat Random</string>
+    <string name="home_navigation_text">Trang chủ</string>
+    <string name="user_navigation_text">Người dùng</string>
+    <string name="signup">Đăng ký</string>
+    <string name="already_have_user">Đã có tài khoản?  <b>Đăng nhập</b></string>
+    <string name="nickname_hint">Biệt danh</string>
+    <string name="re_password">Nhập lại Password</string>
+    <string name="submit_text">Xác nhận</string>
+    <string name="return_text">Quay lại</string>
 </resources>

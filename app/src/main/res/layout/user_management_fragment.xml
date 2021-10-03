@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UserManagementFragment">
+
+    <LinearLayout
+        android:id="@+id/avatar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/avatar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_no_photography_121" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/email_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_ll"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_baseline_email_24"
+            app:tint="@color/secondaryDarkColor" />
+
+        <TextView
+            android:id="@+id/email_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            android:textStyle="bold"
+            tools:text="Wiliam@gmail.com" />
+
+        <ImageView
+            android:id="@+id/change_email_btn"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+
+            android:src="@drawable/ic_baseline_edit_24"
+            app:tint="@color/secondaryDarkColor" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/change_password_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Thay đổi mật khẩu"
+        android:textAllCaps="false"
+        android:layout_above="@+id/delete_acc_btn"
+        android:textColor="@color/secondaryDarkColor"
+        app:background="@color/white"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete_acc_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/logout_login_btn"
+        android:backgroundTint="@android:color/transparent"
+        android:outlineSpotShadowColor="@android:color/transparent"
+        android:text="Xóa tài khoản"
+        android:textAllCaps="false"
+        android:textColor="@color/secondaryDarkColor"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout_login_btn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/secondaryDarkColor"
+        android:text="@string/signout" />
+
+</RelativeLayout>

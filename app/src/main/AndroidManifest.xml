@@ -17,12 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnonyCall">
         <activity
-            android:name=".CallActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:label="@string/title_activity_call"
-            android:theme="@style/Theme.AnonyCall.Fullscreen" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="sensorPortrait"
