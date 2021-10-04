@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/message_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/random_chat_fragment.xml" value="0.18614130434782608" />
         <entry key="app/src/main/res/layout/sign_up_fragment.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout/template_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/user_management_fragment.xml" value="0.22" />
         <entry key="app/src/main/res/menu/menu_bottom.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16302083333333334" />

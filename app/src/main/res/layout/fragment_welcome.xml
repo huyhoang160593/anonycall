@@ -7,6 +7,61 @@
     android:layout_height="match_parent"
     tools:context=".fragments.WelcomeFragment">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinputlayout_tags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/black_overlay"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxStrokeColor="#61C43C00"
+        app:boxStrokeErrorColor="@color/errorRed"
+        app:errorTextColor="@color/errorRed"
+        app:hintTextColor="#99C43C00"
+        app:startIconDrawable="@drawable/ic_baseline_subject_24">
+        <EditText
+            android:id="@+id/tags_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Add new tag!"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="Thêm tag mới"
+            android:inputType="text"
+            android:textColor="@color/primaryTextColor"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/btn_add_tag"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintTop_toTopOf="@id/textinputlayout_tags"
+        app:layout_constraintBottom_toBottomOf="@id/textinputlayout_tags"
+        app:layout_constraintStart_toEndOf="@id/textinputlayout_tags"
+        app:tint="@color/secondaryDarkColor" />
+
+    <co.lujun.androidtagview.TagContainerLayout
+        android:id="@+id/tag_container_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/textinputlayout_tags"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:container_background_color="#ffffff"
+        app:horizontal_interval="10dp"
+        app:tag_clickable="true"
+        app:tag_enable_cross="true"
+        app:tag_theme="random"
+        app:vertical_interval="10dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/selected_call_button"
         android:layout_width="160dp"
@@ -36,26 +91,14 @@
         app:layout_constraintStart_toStartOf="@id/selected_call_button"
         app:layout_constraintEnd_toEndOf="@id/selected_call_button"
         app:layout_constraintBottom_toTopOf="@id/random_call_button" />
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:contentDescription="App Icon"
-        android:src="@drawable/anonycall_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.169" />
-
     <TextView
         android:id="@+id/textview_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/image_view"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Xin chào User!!!"/>

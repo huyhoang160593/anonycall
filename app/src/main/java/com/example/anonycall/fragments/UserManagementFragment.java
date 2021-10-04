@@ -1,13 +1,18 @@
 package com.example.anonycall.fragments;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,8 @@ import com.example.anonycall.MainActivity;
 import com.example.anonycall.R;
 import com.example.anonycall.databinding.UserManagementFragmentBinding;
 import com.example.anonycall.viewModels.UserViewModel;
+
+import java.util.Objects;
 
 public class UserManagementFragment extends Fragment {
     private final String TAG = "UserManagementFragment";
@@ -50,12 +57,15 @@ public class UserManagementFragment extends Fragment {
                 binding.emailLl.setVisibility(View.VISIBLE);
                 binding.avatarLl.setVisibility(View.VISIBLE);
                 binding.emailTextview.setText(newUser.getEmail());
-                if(newUser.getAvatarURL() != null){
+                if(!Objects.equals(newUser.getAvatarURL(), "null")){
                     binding.avatarBtn.setImageURI(Uri.parse(newUser.getAvatarURL()));
+                } else {
+                    binding.avatarBtn.setImageResource(R.drawable.ic_baseline_no_photography_121);
                 }
                 binding.avatarBtn.setOnClickListener(v -> goToSetAvatarFragment());
 
                 binding.changeEmailBtn.setOnClickListener(v -> goToChangeDetailFragment());
+                binding.changePasswordBtn.setOnClickListener(v -> goToChangePasswordFragment());
 
                 binding.logoutLoginBtn.setText(R.string.signout);
                 binding.logoutLoginBtn.setOnClickListener(v -> signOutFirebase());
@@ -69,8 +79,14 @@ public class UserManagementFragment extends Fragment {
         });
     }
 
-    private void goToChangeDetailFragment() {
+    private void goToChangePasswordFragment() {
+        Navigation.findNavController(requireView())
+                .navigate(UserManagementFragmentDirections.actionUserManagementFragmentToChangePasswordFragment());
+    }
 
+    private void goToChangeDetailFragment() {
+        Navigation.findNavController(requireView())
+                .navigate(UserManagementFragmentDirections.actionUserManagementFragmentToChangeDetailFragment());
     }
 
     private void goToSetAvatarFragment() {

@@ -1,13 +1,13 @@
 package com.example.anonycall.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import co.lujun.androidtagview.TagView.OnTagClickListener
 import com.example.anonycall.MainActivity
 import com.example.anonycall.databinding.FragmentWelcomeBinding
 import com.example.anonycall.viewModels.UserViewModel
@@ -42,13 +42,31 @@ class WelcomeFragment : Fragment() {
             randomChatButton.setOnClickListener {
                 goToRandomChatFragment()
             }
+            viewModel.listTag.observe(viewLifecycleOwner, {
+                newTagsList ->
+                if(newTagsList != null){
+                    binding.tagContainerView.tags = newTagsList
+                }
+            })
+            tagContainerView.setOnTagClickListener(object : OnTagClickListener {
+                override fun onTagClick(position: Int, text: String?) {}
+                override fun onTagLongClick(position: Int, text: String?) {}
+                override fun onSelectedTagDrag(position: Int, text: String?) {}
+
+                override fun onTagCrossClick(position: Int) {
+                    deleteTags(position)
+                }
+            })
             viewModel.user.observe(viewLifecycleOwner, {
                 currentUser ->
                 run {
-                    Log.e(TAG,currentUser.toString())
                     when {
                         currentUser == null -> {
                             textviewUser.text = "Xin chào người lạ!!!"
+
+                            textinputlayoutTags.visibility = View.GONE
+                            btnAddTag.visibility = View.INVISIBLE
+                            tagContainerView.visibility = View.GONE
                         }
                         currentUser.displayName != null && currentUser.displayName.isNotEmpty() -> {
                             textviewUser.text = "Xin chào ${currentUser.displayName}!"
@@ -61,9 +79,24 @@ class WelcomeFragment : Fragment() {
                             selectedCallButton.visibility = View.VISIBLE
                         }
                     }
+                    btnAddTag.setOnClickListener { addTags() }
                 }
             })
         }
+    }
+
+    private fun addTags() {
+        if(binding.textinputlayoutTags.editText != null) {
+            val tagString = binding.textinputlayoutTags.editText!!.text.toString()
+            if(tagString.isNotBlank()){
+                viewModel.addTag(tagString)
+            }
+            binding.textinputlayoutTags.editText!!.setText("")
+        }
+    }
+
+    private fun deleteTags(position: Int) {
+        viewModel.deleteTag(position)
     }
 
     private fun goToRandomChatFragment() {

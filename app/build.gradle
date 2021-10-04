@@ -51,6 +51,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     //WebRTC
     implementation 'org.webrtc:google-webrtc:1.0.32006'
+    //Tagview
+    implementation 'co.lujun:androidtagview:1.1.7'
 
     //Layout & other
     implementation 'com.google.android.material:material:1.4.0'

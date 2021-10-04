@@ -22,6 +22,9 @@ class UserViewModel: ViewModel(){
     private val _isNotFalse = MutableLiveData<Number>(-1)
     val isNotFalse: LiveData<Number> = _isNotFalse
 
+    private val _listTag = MutableLiveData<List<String>>(null)
+    val listTag: LiveData<List<String>> = _listTag
+
     init {
         getInitialUser()
     }
@@ -37,12 +40,31 @@ class UserViewModel: ViewModel(){
         }
     }
 
+    fun addTag(newTag: String) {
+        if(_listTag.value != null) {
+            val currentTagMutableList = _listTag.value!!.toMutableList()
+            currentTagMutableList.add(newTag)
+            _listTag.value = currentTagMutableList.toList()
+        } else {
+            _listTag.value = listOf(newTag)
+        }
+    }
+
+    fun deleteTag(position: Int) {
+        val currentTagMutableList = _listTag.value!!.toMutableList()
+        val deletedElement = _listTag.value!![position]
+        _listTag.value = currentTagMutableList.filter { tag ->
+            tag != deletedElement
+        }.toList()
+    }
+
     fun signupWithEmail(nickname:String,email:String,password:String) {
         val profileUpdate = userProfileChangeRequest {
             displayName = nickname
         }
         auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
-            it.user?.updateProfile(profileUpdate)?.addOnCompleteListener { task ->
+            val user = auth.currentUser
+            user!!.updateProfile(profileUpdate).addOnCompleteListener { task ->
                 if (task.isSuccessful){
                     getInitialUser()
                     _isNotFalse.value = 1
@@ -58,6 +80,7 @@ class UserViewModel: ViewModel(){
     fun changePassword(oldPass: String, newPass: String) {
         auth.signInWithEmailAndPassword(_user.value!!.email!!,oldPass)
             .addOnSuccessListener {
+                Log.e(TAG,it.user.toString())
                 it.user?.updatePassword(newPass)?.addOnCompleteListener { task ->
                     if (task.isSuccessful){
                         getInitialUser()
