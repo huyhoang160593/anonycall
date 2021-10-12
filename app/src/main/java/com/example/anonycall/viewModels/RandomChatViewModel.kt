@@ -29,13 +29,14 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
 
     private val sdpObserver = object : AppSdpObserver(){}
 
-//    private lateinit var dataChannel: DataChannel
+    private lateinit var dataChannel: DataChannel
 
     init {
         getMeetingId()
     }
 
     fun createRTCChatClient() {
+        Constants.isCallEnded = false
         rtcChatClient = RTCChatClient(getApplication(),object : PeerConnectionObserver(){
             override fun onIceCandidate(p0: IceCandidate?) {
                 super.onIceCandidate(p0)
@@ -46,18 +47,18 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
 
             override fun onDataChannel(p0: DataChannel?) {
                 super.onDataChannel(p0)
-//                dataChannel = p0!!
-//                dataChannel.registerObserver(createDataChannelObserver())
+                dataChannel = p0!!
+                dataChannel.registerObserver(createDataChannelObserver())
             }
         })
 
         if (_meetingId.value != null){
             val testDataChannel = rtcChatClient.createDataChannel()
-            Log.e(TAG,"data channel: ${testDataChannel?.label()}")
-//            if(testDataChannel != null) {
-//                dataChannel = testDataChannel
-//                dataChannel.registerObserver(createDataChannelObserver())
-//            }
+            Log.e(TAG,"data channel: $testDataChannel")
+            if(testDataChannel != null) {
+                dataChannel = testDataChannel
+                dataChannel.registerObserver(createDataChannelObserver())
+            }
             signallingClient =  SignalingClientNew(_meetingId.value!!,createSignallingClientListener())
             if (!_isJoin)
                 Log.e(TAG,"this is a call $_isJoin")
@@ -65,7 +66,16 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-//    fun sendMessage(message: String) = rtcChatClient.sendMessage(dataChannel,message)
+    fun endCall() {
+        if (!Constants.isCallEnded) {
+            Constants.isCallEnded = true
+            if(_meetingId.value!!.isNotBlank())
+                rtcChatClient.endCall(_meetingId.value!!)
+            //Make something to end the call
+//                sendMessage("Thông báo: Người dùng ngắt kết nối!!")
+        }
+    }
+    fun sendMessage(message: String) = rtcChatClient.sendMessage(dataChannel,message)
 
     private fun getMeetingId() = viewModelScope.launch {
         val result = RandomCallService.getFirstOfferCall(RANDOM_CHAT_COLLECTION)
@@ -119,7 +129,7 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
                 if(_meetingId.value!!.isNotBlank())
                     rtcChatClient.endCall(_meetingId.value!!)
                 //Make something to end the call
-//                sendMessage("Thông báo: Người dùng ngắt kết nối!!")
+                sendMessage("Thông báo: Người dùng ngắt kết nối!!")
             }
         }
     }

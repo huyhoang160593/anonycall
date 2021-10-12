@@ -3,7 +3,6 @@ package com.example.anonycall.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anonycall.databinding.MessageItemBinding
 import com.example.anonycall.models.Message
@@ -38,9 +37,11 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
                     visibility = View.VISIBLE
                 }
                 holder.binding.timeStampMessage.apply {
+                    visibility = View.VISIBLE
                     text = "Gửi vào lúc ${currentMessage.time}"
                 }
-                holder.binding.tvReceiveMessage.visibility = View.GONE
+                holder.binding.tvReceiveMessage.visibility = View.INVISIBLE
+                holder.binding.timeStampReceiveMessage.visibility = View.INVISIBLE
             }
             RECEIVE_ID -> {
                 holder.binding.tvReceiveMessage.apply {
@@ -48,9 +49,11 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
                     visibility = View.VISIBLE
                 }
                 holder.binding.timeStampReceiveMessage.apply {
+                    visibility = View.VISIBLE
                     text = "Nhận vào lúc ${currentMessage.time}"
                 }
-                holder.binding.tvMessage.visibility = View.GONE
+                holder.binding.tvMessage.visibility = View.INVISIBLE
+                holder.binding.timeStampMessage.visibility = View.INVISIBLE
             }
         }
     }

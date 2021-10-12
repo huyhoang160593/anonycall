@@ -52,7 +52,13 @@
         android:id="@+id/randomCall"
         android:name="com.example.anonycall.fragments.RandomCall"
         android:label="fragment_random_call"
-        tools:layout="@layout/fragment_random_call" />
+        tools:layout="@layout/fragment_random_call" >
+        <action
+            android:id="@+id/action_randomCall_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.anonycall.fragments.LoginFragment"
@@ -69,7 +75,11 @@
         android:id="@+id/randomChatFragment"
         android:name="com.example.anonycall.fragments.RandomChatFragment"
         android:label="RandomChatFragment"
-        tools:layout="@layout/random_chat_fragment"/>
+        tools:layout="@layout/random_chat_fragment">
+        <action
+            android:id="@+id/action_randomChatFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userManagementFragment"
         android:name="com.example.anonycall.fragments.UserManagementFragment"

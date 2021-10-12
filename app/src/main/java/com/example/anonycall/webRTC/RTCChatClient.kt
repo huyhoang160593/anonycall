@@ -12,10 +12,6 @@ import org.webrtc.DataChannel
 import java.nio.ByteBuffer
 import org.webrtc.MediaConstraints
 
-
-
-
-
 private const val TAG = "RTCChatClient"
 class RTCChatClient(
     context: Application,
@@ -55,7 +51,7 @@ class RTCChatClient(
         return PeerConnectionFactory
             .builder()
             .setOptions(PeerConnectionFactory.Options().apply {
-                disableEncryption = true
+//                disableEncryption = true -- The cause of our mayhem, without you we finally can create DataChannel
                 disableNetworkMonitor = true
             })
             .createPeerConnectionFactory()
@@ -163,15 +159,7 @@ class RTCChatClient(
 
     fun answer(sdpObserver: SdpObserver, meetingID: String) = peerConnection?.chatAnswer(sdpObserver, meetingID)
 
-    fun createDataChannel() : DataChannel? {
-        return try {
-            val dataChannelInit = DataChannel.Init()
-            peerConnection?.createDataChannel("test",dataChannelInit)
-        }catch (ex:Exception) {
-            Log.e(TAG,"DataChannel create exception:", ex)
-            null
-        }
-    }
+    fun createDataChannel() = peerConnection?.createDataChannel("message",DataChannel.Init())
 
     fun sendMessage(dataChannel: DataChannel, msg: String) {
         val buffer: ByteBuffer = ByteBuffer.wrap(msg.toByteArray())

@@ -126,7 +126,7 @@ class CallFragment : Fragment() {
                 rtcClient.endCall(meetingID)
                 binding.remoteView.isGone = false
                 Constants.isCallEnded = true
-                requireActivity().onBackPressed()
+                findNavController().navigate(CallFragmentDirections.actionCallFragmentToWelcomeFragment())
             }
         }
     }

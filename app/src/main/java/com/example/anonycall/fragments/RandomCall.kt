@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import com.example.anonycall.MainActivity
 import com.example.anonycall.R
 import com.example.anonycall.databinding.FragmentRandomCallBinding
@@ -123,7 +124,8 @@ class RandomCall : Fragment() {
                 rtcClient.endCall(meetingID)
                 binding.remoteView.isGone = false
                 Constants.isCallEnded = true
-                requireActivity().onBackPressed()
+                //End the call and return to welcome fragment
+                findNavController().navigate(RandomCallDirections.actionRandomCallToWelcomeFragment())
             }
         }
     }
@@ -186,6 +188,7 @@ class RandomCall : Fragment() {
             }
         ,true)
 
+
         rtcClient.initSurfaceView(binding.remoteView)
         rtcClient.initSurfaceView(binding.localView)
         rtcClient.startLocalVideoCapture(binding.localView)
@@ -221,7 +224,7 @@ class RandomCall : Fragment() {
             if (!Constants.isCallEnded) {
                 Constants.isCallEnded = true
                 rtcClient.endCall(meetingID)
-                requireActivity().onBackPressed()
+                findNavController().navigate(RandomCallDirections.actionRandomCallToWelcomeFragment())
             }
         }
     }

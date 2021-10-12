@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEND
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.anonycall.MainActivity
 import com.example.anonycall.adapters.MessageAdapter
 import com.example.anonycall.databinding.RandomChatFragmentBinding
 import com.example.anonycall.models.Message
@@ -46,11 +48,17 @@ class RandomChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).hidingBottomNavigation(status = true)
+
         MainScope().launch {
             delay(1000)
             withContext(Dispatchers.Main){
                 binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
             }
+        }
+        binding.endCallButton.setOnClickListener {
+            backToWelcomeFragment()
         }
         // RecycleView Part
         adapter = MessageAdapter()
@@ -61,6 +69,7 @@ class RandomChatFragment : Fragment() {
         binding.btnSend.setOnClickListener {
             sendMessage()
         }
+
         binding.etMessage.setOnEditorActionListener { _v, actionId, _event ->
             Log.e(TAG,"View:$_v, ActionId:$actionId, Event: $_event")
             when(actionId){
@@ -101,13 +110,18 @@ class RandomChatFragment : Fragment() {
         customMessage("Bắt đầu tìm kiếm người lạ cho bạn ...")
     }
 
+    private fun backToWelcomeFragment() {
+        viewModel.endCall()
+        findNavController().navigate(RandomChatFragmentDirections.actionRandomChatFragmentToWelcomeFragment())
+    }
+
     private fun sendMessage(){
         val message = binding.etMessage.text.toString()
         val timeStamp = Time.timeStamp()
 
         if(message.isNotEmpty()){
             binding.etMessage.setText("")
-//            viewModel.sendMessage(message)
+            viewModel.sendMessage(message)
             adapter.insertMessage(Message(message,SEND_ID, timeStamp))
             binding.rvMessages.scrollToPosition(adapter.itemCount - 1)
         }
@@ -136,5 +150,6 @@ class RandomChatFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        viewModelStore.clear()
     }
 }
