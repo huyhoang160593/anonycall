@@ -3,11 +3,13 @@ package com.example.anonycall.viewModels
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.anonycall.models.MessageEvent
 import com.example.anonycall.services.RandomCallService
 import com.example.anonycall.utils.Constants
 import com.example.anonycall.utils.Constants.RANDOM_CHAT_COLLECTION
 import com.example.anonycall.webRTC.*
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.webrtc.DataChannel
 import org.webrtc.IceCandidate
 import org.webrtc.SessionDescription
@@ -18,8 +20,8 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
     private val _meetingId = MutableLiveData("")
     val meetingId: LiveData<String> = _meetingId
 
-    private val _answerMessage = MutableLiveData("")
-    val answerMessage : LiveData<String> = _answerMessage
+    private val _closeFragment = MutableLiveData(false)
+    val closeFragment: LiveData<Boolean> = _closeFragment
 
     private var _isJoin = false
 
@@ -31,8 +33,11 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
 
     private lateinit var dataChannel: DataChannel
 
+    private val vmDataChannelObserver: DataChannelObserver
+
     init {
         getMeetingId()
+        vmDataChannelObserver = createDataChannelObserver()
     }
 
     fun createRTCChatClient() {
@@ -47,21 +52,17 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
 
             override fun onDataChannel(p0: DataChannel?) {
                 super.onDataChannel(p0)
+                Log.e(TAG,"Data channel on Receive: $p0")
                 dataChannel = p0!!
                 dataChannel.registerObserver(createDataChannelObserver())
             }
         })
 
         if (_meetingId.value != null){
-            val testDataChannel = rtcChatClient.createDataChannel()
-            Log.e(TAG,"data channel: $testDataChannel")
-            if(testDataChannel != null) {
-                dataChannel = testDataChannel
-                dataChannel.registerObserver(createDataChannelObserver())
-            }
-            signallingClient =  SignalingClientNew(_meetingId.value!!,createSignallingClientListener())
+            dataChannel = rtcChatClient.createDataChannel()!!
+            dataChannel.registerObserver(vmDataChannelObserver)
+            signallingClient =  SignalingClientNew(_meetingId.value!!,createSignallingClientListener(),RANDOM_CHAT_COLLECTION)
             if (!_isJoin)
-                Log.e(TAG,"this is a call $_isJoin")
                 rtcChatClient.call(sdpObserver, _meetingId.value!!)
         }
     }
@@ -69,10 +70,11 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
     fun endCall() {
         if (!Constants.isCallEnded) {
             Constants.isCallEnded = true
+            //Make something to end the call
+            sendMessage("Thông báo: Người dùng ngắt kết nối!!")
+
             if(_meetingId.value!!.isNotBlank())
                 rtcChatClient.endCall(_meetingId.value!!)
-            //Make something to end the call
-//                sendMessage("Thông báo: Người dùng ngắt kết nối!!")
         }
     }
     fun sendMessage(message: String) = rtcChatClient.sendMessage(dataChannel,message)
@@ -89,16 +91,10 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     private fun createDataChannelObserver() = object : DataChannelObserver() {
-        override fun onMessage(p0: DataChannel.Buffer?) {
-            super.onMessage(p0)
-            if(p0 != null){
-                val data: ByteBuffer = p0.data
-                val bytes = ByteArray(data.remaining())
-                data.get(bytes)
-                //Message Answer
-                val message = String(bytes)
-                _answerMessage.value = message
-            }
+        override fun onStateChange() {
+            super.onStateChange()
+            val msg = "Liên kết hai người đã được khởi tạo, hãy thử nhắn tin cho đối phương..."
+            rtcChatClient.sendMessage(dataChannel,msg)
         }
     }
 
@@ -126,10 +122,13 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
         override fun onCallEnded() {
             if (!Constants.isCallEnded) {
                 Constants.isCallEnded = true
-                if(_meetingId.value!!.isNotBlank())
-                    rtcChatClient.endCall(_meetingId.value!!)
+
                 //Make something to end the call
                 sendMessage("Thông báo: Người dùng ngắt kết nối!!")
+                _closeFragment.value = true
+                dataChannel.close()
+                if(_meetingId.value!!.isNotBlank())
+                    rtcChatClient.endCall(_meetingId.value!!)
             }
         }
     }

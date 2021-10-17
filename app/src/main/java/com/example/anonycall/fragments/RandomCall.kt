@@ -192,7 +192,7 @@ class RandomCall : Fragment() {
         rtcClient.initSurfaceView(binding.remoteView)
         rtcClient.initSurfaceView(binding.localView)
         rtcClient.startLocalVideoCapture(binding.localView)
-        signallingClient =  SignalingClientNew(meetingID,createSignallingClientListener())
+        signallingClient =  SignalingClientNew(meetingID,createSignallingClientListener(), Constants.RANDOM_CALLS_COLLECTION)
         Log.e(TAG,"meetingId is: $meetingID and isJoin is: $isJoin")
         if (!isJoin)
             rtcClient.call(sdpObserver,meetingID)

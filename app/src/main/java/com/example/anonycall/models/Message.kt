@@ -5,3 +5,5 @@ data class Message(
     val id:String,
     val time:String
 )
+
+data class MessageEvent(val message: String)

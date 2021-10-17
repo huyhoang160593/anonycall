@@ -10,4 +10,9 @@
         android:icon="@drawable/ic_baseline_face_24"
         android:title="@string/user_navigation_text">
     </item>
+    <item
+        android:id="@+id/contactFragment"
+        android:icon="@drawable/ic_baseline_contacts_24"
+        android:title="@string/contract_string">
+    </item>
 </menu>

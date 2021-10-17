@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/item_border"
+    >
+
+    <ImageView
+        android:id="@+id/image_rqfr"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/images" />
+
+    <TextView
+        android:id="@+id/username_rqfr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10sp"
+        android:layout_toRightOf="@+id/image_rqfr"
+        android:text="thaolephuong"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/accept_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xác nhận"
+        android:backgroundTint="@color/secondaryDarkColor"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+android:minWidth="10dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/decline_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/accept_request"
+        android:backgroundTint="@color/white"
+        android:minWidth="10dp"
+        android:text="Xóa"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/block_h"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_rqfr"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/image_rqfr"
+        android:minWidth="15dp"
+        android:text="Chặn"
+        android:textAllCaps="false"
+        android:textColor="@color/secondaryColor" />
+
+</RelativeLayout>

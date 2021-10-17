@@ -48,4 +48,5 @@
     <string name="re_password">Nhập lại Password</string>
     <string name="submit_text">Xác nhận</string>
     <string name="return_text">Quay lại</string>
+    <string name="contract_string">Liên hệ</string>
 </resources>

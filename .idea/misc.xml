@@ -4,10 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2984375" />
+        <entry key="app/src/main/res/drawable/bg_btn.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/border.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/curve_background.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/google_icon.xml" value="0.2984375" />
+        <entry key="app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/keyboard.xml" value="0.2984375" />
+        <entry key="app/src/main/res/drawable/msg_border.xml" value="0.16302083333333334" />
         <entry key="app/src/main/res/drawable/receive_round_box.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/round_view.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/send_round_box.xml" value="0.2984375" />
@@ -17,17 +20,20 @@
         <entry key="app/src/main/res/layout/change_detail_fragment.xml" value="0.20244565217391305" />
         <entry key="app/src/main/res/layout/change_password_fragment.xml" value="0.20697463768115942" />
         <entry key="app/src/main/res/layout/fragment_call.xml" value="0.15896739130434784" />
+        <entry key="app/src/main/res/layout/fragment_chat_with_friend.xml" value="0.12063372945184969" />
         <entry key="app/src/main/res/layout/fragment_random_call.xml" value="0.2210144927536232" />
         <entry key="app/src/main/res/layout/fragment_rtc_call.xml" value="0.15896739130434784" />
         <entry key="app/src/main/res/layout/fragment_selected_call.xml" value="0.2263456903143315" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.5" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.20244565217391305" />
+        <entry key="app/src/main/res/layout/item_blocked_friend.xml" value="0.146875" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.3211585286700039" />
         <entry key="app/src/main/res/layout/login_fragment_redux.xml" value="0.25" />
         <entry key="app/src/main/res/layout/message_item.xml" value="0.22090102116235022" />
         <entry key="app/src/main/res/layout/random_chat_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/sign_up_fragment.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout/singleview_msg.xml" value="0.4062038482111105" />
         <entry key="app/src/main/res/layout/template_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/user_management_fragment.xml" value="0.22" />
         <entry key="app/src/main/res/menu/menu_bottom.xml" value="0.28229166666666666" />

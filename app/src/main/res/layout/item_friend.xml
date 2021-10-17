@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/item_border"
+    >
+
+    <ImageView
+        android:id="@+id/image_fr"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/images" />
+
+    <TextView
+        android:id="@+id/username_fr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10sp"
+        android:layout_toRightOf="@+id/image_fr"
+        android:text="thaolephuong"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#E1000000"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_fr"
+        android:layout_alignLeft="@+id/username_fr"
+        android:minWidth="15dp"
+        android:text="Xóa"
+        android:textAllCaps="false"
+        android:textColor="@color/secondaryColor" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/block"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_fr"
+        android:layout_toRightOf="@+id/delete"
+        android:minWidth="15dp"
+        android:text="Chặn"
+        android:textAllCaps="false"
+        android:textColor="@color/secondaryColor" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/ic_baseline_chat_bubble_24"
+        android:tint="@color/secondaryDarkColor" />
+
+</RelativeLayout>

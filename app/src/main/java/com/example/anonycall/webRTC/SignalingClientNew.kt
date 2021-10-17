@@ -15,7 +15,8 @@ private const val TAG = "SignallingClientNew"
 
 class SignalingClientNew(
     private val meetingId:String,
-    private val signalingListener: SignalingClientListener
+    private val signalingListener: SignalingClientListener,
+    private val collection: String
 ):CoroutineScope {
 
     companion object {
@@ -40,7 +41,7 @@ class SignalingClientNew(
             signalingListener.onConnectionEstablished()
         }
         try {
-            database.collection(Constants.RANDOM_CALLS_COLLECTION)
+            database.collection(collection)
                 .document(meetingId)
                 .addSnapshotListener { snapshot, error ->
                     if(error != null){
@@ -77,7 +78,7 @@ class SignalingClientNew(
                         }
                     }
                 }
-            database.collection("random_calls")
+            database.collection(collection)
                 .document(meetingId)
                 .collection("candidates")
                 .addSnapshotListener { querySnapshot, error ->
@@ -126,10 +127,10 @@ class SignalingClientNew(
         val newCandidateConstant = candidate?.let {
             Candidate(it.serverUrl,it.sdpMid,it.sdpMLineIndex,it.sdp,type)
         }
-        Log.e(TAG,newCandidateConstant.toString())
+        Log.e(TAG," meetingId:$meetingId, IceCandidate:${newCandidateConstant.toString()}")
         if (newCandidateConstant != null) {
             RandomCallService.addCandidate(
-                collection = Constants.RANDOM_CALLS_COLLECTION,
+                collection = collection,
                 meetingId = meetingId,
                 type = type,
                 candidate = newCandidateConstant

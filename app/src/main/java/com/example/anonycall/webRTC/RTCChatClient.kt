@@ -162,6 +162,7 @@ class RTCChatClient(
     fun createDataChannel() = peerConnection?.createDataChannel("message",DataChannel.Init())
 
     fun sendMessage(dataChannel: DataChannel, msg: String) {
+        Log.d(TAG,"message: $msg")
         val buffer: ByteBuffer = ByteBuffer.wrap(msg.toByteArray())
         val sent = dataChannel.send(DataChannel.Buffer(buffer, false))
         Log.d(TAG, "MessageSend -> $sent")

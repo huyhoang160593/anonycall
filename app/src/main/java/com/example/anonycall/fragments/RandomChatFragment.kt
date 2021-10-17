@@ -15,12 +15,16 @@ import com.example.anonycall.MainActivity
 import com.example.anonycall.adapters.MessageAdapter
 import com.example.anonycall.databinding.RandomChatFragmentBinding
 import com.example.anonycall.models.Message
+import com.example.anonycall.models.MessageEvent
 import com.example.anonycall.utils.Constants.RECEIVE_ID
 import com.example.anonycall.utils.Constants.SEND_ID
 import com.example.anonycall.utils.Time
 import com.example.anonycall.viewModels.RandomChatViewModel
 import com.example.anonycall.viewModels.RandomChatViewModelFactory
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 private const val TAG ="RandomChatFragment"
 class RandomChatFragment : Fragment() {
@@ -42,8 +46,14 @@ class RandomChatFragment : Fragment() {
         viewModelFactory = RandomChatViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(viewModelStore,viewModelFactory)
             .get(RandomChatViewModel::class.java)
-
+        EventBus.getDefault().register(this)
         return binding.root
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageEvent?) {
+        if(event == null) return
+        messageResponse(event.message)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,14 +110,14 @@ class RandomChatFragment : Fragment() {
                 viewModel.createRTCChatClient()
             }
         })
-        //Receive Message
-        viewModel.answerMessage.observe(viewLifecycleOwner,{
-            newMessage ->
-            if(newMessage != null && newMessage.isNotBlank()){
-                messageResponse(newMessage)
+        customMessage("Bắt đầu tìm kiếm người lạ cho bạn...")
+
+        viewModel.closeFragment.observe(viewLifecycleOwner, {
+            checkToExit ->
+            if(checkToExit == true) {
+                backToWelcomeFragment()
             }
         })
-        customMessage("Bắt đầu tìm kiếm người lạ cho bạn ...")
     }
 
     private fun backToWelcomeFragment() {
@@ -150,6 +160,9 @@ class RandomChatFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        EventBus.getDefault().unregister(this);
+
         viewModelStore.clear()
     }
 }
