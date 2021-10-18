@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEND
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ import com.example.anonycall.utils.Constants.SEND_ID
 import com.example.anonycall.utils.Time
 import com.example.anonycall.viewModels.RandomChatViewModel
 import com.example.anonycall.viewModels.RandomChatViewModelFactory
+import com.example.anonycall.viewModels.UserViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -30,22 +32,30 @@ private const val TAG ="RandomChatFragment"
 class RandomChatFragment : Fragment() {
     private var _binding: RandomChatFragmentBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel: RandomChatViewModel by viewModels()
 
     private lateinit var viewModel: RandomChatViewModel
     private lateinit var viewModelFactory: RandomChatViewModelFactory
+    private val userViewModel: UserViewModel by activityViewModels()
 
     private lateinit var adapter: MessageAdapter
+
+    private var currentListTag: List<String>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModelFactory = RandomChatViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(viewModelStore,viewModelFactory)
+            .get(RandomChatViewModel::class.java)
+        currentListTag = userViewModel.getCurrentListTag()
+        Log.e(TAG,"current list tag: $currentListTag")
+        viewModel.getMeetingId(currentListTag)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = RandomChatFragmentBinding.inflate(inflater,container,false)
-
-        viewModelFactory = RandomChatViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(viewModelStore,viewModelFactory)
-            .get(RandomChatViewModel::class.java)
         EventBus.getDefault().register(this)
         return binding.root
     }
@@ -111,6 +121,10 @@ class RandomChatFragment : Fragment() {
             }
         })
         customMessage("Bắt đầu tìm kiếm người lạ cho bạn...")
+
+        if(currentListTag != null && currentListTag!!.isNotEmpty()){
+            customMessage("Người lạ sẽ có 1 trong những điểm chung liên quan đến $currentListTag")
+        }
 
         viewModel.closeFragment.observe(viewLifecycleOwner, {
             checkToExit ->

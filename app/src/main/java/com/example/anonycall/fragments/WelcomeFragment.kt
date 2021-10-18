@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import co.lujun.androidtagview.TagView.OnTagClickListener
@@ -87,11 +88,17 @@ class WelcomeFragment : Fragment() {
 
     private fun addTags() {
         if(binding.textinputlayoutTags.editText != null) {
-            val tagString = binding.textinputlayoutTags.editText!!.text.toString()
-            if(tagString.isNotBlank()){
-                viewModel.addTag(tagString)
+            val currentListTag = viewModel.getCurrentListTag()
+            if(currentListTag.isNullOrEmpty() ||(!currentListTag.isNullOrEmpty() && currentListTag.size < 5) ) {
+                val tagString = binding.textinputlayoutTags.editText!!.text.toString()
+                if(tagString.isNotBlank()){
+                    viewModel.addTag(tagString)
+                }
+                binding.textinputlayoutTags.editText!!.setText("")
+            } else {
+                Toast.makeText(requireContext(),"Bạn chỉ được thêm tối đa 5 tags",Toast.LENGTH_LONG).show()
             }
-            binding.textinputlayoutTags.editText!!.setText("")
+
         }
     }
 

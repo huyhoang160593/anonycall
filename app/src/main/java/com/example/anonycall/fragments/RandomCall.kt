@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ import com.example.anonycall.R
 import com.example.anonycall.databinding.FragmentRandomCallBinding
 import com.example.anonycall.utils.Constants
 import com.example.anonycall.viewModels.RandomCallViewModel
+import com.example.anonycall.viewModels.UserViewModel
 import com.example.anonycall.webRTC.*
 import org.webrtc.*
 
@@ -30,6 +32,7 @@ class RandomCall : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: RandomCallViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     companion object {
         private const val CAMERA_AUDIO_PERMISSION_REQUEST_CODE = 1
@@ -54,7 +57,8 @@ class RandomCall : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getMeetingId()
+        val currentListTag = userViewModel.getCurrentListTag()
+        viewModel.getMeetingId(currentListTag)
         //hiding bottom nav
         (activity as MainActivity).hidingBottomNavigation(status = true)
     }

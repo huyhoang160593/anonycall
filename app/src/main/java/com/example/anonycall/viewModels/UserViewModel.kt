@@ -11,6 +11,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 private const val TAG = "UserViewModel"
 class UserViewModel: ViewModel(){
@@ -43,10 +44,10 @@ class UserViewModel: ViewModel(){
     fun addTag(newTag: String) {
         if(_listTag.value != null) {
             val currentTagMutableList = _listTag.value!!.toMutableList()
-            currentTagMutableList.add(newTag)
-            _listTag.value = currentTagMutableList.toList()
+            currentTagMutableList.add(newTag.lowercase(Locale.getDefault()))
+            _listTag.value = currentTagMutableList.toSet().toList()
         } else {
-            _listTag.value = listOf(newTag)
+            _listTag.value = listOf(newTag.lowercase(Locale.getDefault()))
         }
     }
 
@@ -56,6 +57,10 @@ class UserViewModel: ViewModel(){
         _listTag.value = currentTagMutableList.filter { tag ->
             tag != deletedElement
         }.toList()
+    }
+
+    fun getCurrentListTag():List<String>? {
+        return _listTag.value
     }
 
     fun signupWithEmail(nickname:String,email:String,password:String) {

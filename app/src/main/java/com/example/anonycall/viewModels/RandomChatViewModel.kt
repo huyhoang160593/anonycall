@@ -36,7 +36,6 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
     private val vmDataChannelObserver: DataChannelObserver
 
     init {
-        getMeetingId()
         vmDataChannelObserver = createDataChannelObserver()
     }
 
@@ -79,15 +78,24 @@ class RandomChatViewModel(application: Application) : AndroidViewModel(applicati
     }
     fun sendMessage(message: String) = rtcChatClient.sendMessage(dataChannel,message)
 
-    private fun getMeetingId() = viewModelScope.launch {
-        val result = RandomCallService.getFirstOfferCall(RANDOM_CHAT_COLLECTION)
-        if(result == null) {
-            _meetingId.value = RandomCallService.createCallId(RANDOM_CHAT_COLLECTION)
+    fun getMeetingId(listTag: List<String>?) = viewModelScope.launch {
+        if(listTag == null || listTag.isEmpty()){
+            val result = RandomCallService.getFirstOfferCall(RANDOM_CHAT_COLLECTION)
+            if(result == null) {
+                _meetingId.value = RandomCallService.createCallId(RANDOM_CHAT_COLLECTION)
+            } else {
+                _isJoin = true
+                _meetingId.value = result
+            }
         } else {
-            _isJoin = true
-            _meetingId.value = result
+            val result = RandomCallService.getFirstOfferCall(RANDOM_CHAT_COLLECTION,listTag)
+            if(result == null) {
+                _meetingId.value = RandomCallService.createCallId(RANDOM_CHAT_COLLECTION,listTag)
+            } else {
+                _isJoin = true
+                _meetingId.value = result
+            }
         }
-        Log.e(TAG,"finish getMeetingId with ${_meetingId.value} and $_isJoin")
     }
 
     private fun createDataChannelObserver() = object : DataChannelObserver() {

@@ -1,18 +1,12 @@
 package com.example.anonycall.fragments;
 
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,24 +48,21 @@ public class UserManagementFragment extends Fragment {
         ((MainActivity) requireActivity()).hidingBottomNavigation(false);
 
         binding.deleteAccBtn.setVisibility(View.GONE);
-        binding.resetAvt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mUserViewModel.changeAvatar("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
-                AvatarChangeFragment.newInstance().updatePhotoUriFirebase("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
-            }
+        binding.resetAvt.setOnClickListener(view1 -> {
+            mUserViewModel.changeAvatar("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
+            AvatarChangeFragment.newInstance().updatePhotoUriFirebase("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
         });
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), newUser -> {
             if(newUser != null) {
                 binding.emailLl.setVisibility(View.VISIBLE);
                 binding.avatarLl.setVisibility(View.VISIBLE);
-                binding.emailTextview.setText(newUser.getDisplayName());
+                binding.emailTextview.setText(newUser.getEmail());
                 if(!Objects.equals(newUser.getAvatarURL(), "null")){
-                    Glide.with(getContext()).load(newUser.getAvatarURL())
+                    Glide.with(requireContext()).load(newUser.getAvatarURL())
                             .apply(new RequestOptions().override(200, 200)).into(binding.avatarBtn);
                 } else {
                     String noimg="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg";
-                    Glide.with(getContext()).load(noimg)
+                    Glide.with(requireContext()).load(noimg)
                             .apply(new RequestOptions().override(200, 200)).into(binding.avatarBtn);
                 }
                 binding.avatarBtn.setOnClickListener(v -> goToSetAvatarFragment());
