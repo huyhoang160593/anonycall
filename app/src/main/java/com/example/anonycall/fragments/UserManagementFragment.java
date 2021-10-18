@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.anonycall.MainActivity;
 import com.example.anonycall.R;
 import com.example.anonycall.databinding.UserManagementFragmentBinding;
@@ -51,16 +54,25 @@ public class UserManagementFragment extends Fragment {
         ((MainActivity) requireActivity()).hidingBottomNavigation(false);
 
         binding.deleteAccBtn.setVisibility(View.GONE);
-
+        binding.resetAvt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUserViewModel.changeAvatar("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
+                AvatarChangeFragment.newInstance().updatePhotoUriFirebase("https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
+            }
+        });
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), newUser -> {
             if(newUser != null) {
                 binding.emailLl.setVisibility(View.VISIBLE);
                 binding.avatarLl.setVisibility(View.VISIBLE);
-                binding.emailTextview.setText(newUser.getEmail());
+                binding.emailTextview.setText(newUser.getDisplayName());
                 if(!Objects.equals(newUser.getAvatarURL(), "null")){
-                    binding.avatarBtn.setImageURI(Uri.parse(newUser.getAvatarURL()));
+                    Glide.with(getContext()).load(newUser.getAvatarURL())
+                            .apply(new RequestOptions().override(200, 200)).into(binding.avatarBtn);
                 } else {
-                    binding.avatarBtn.setImageResource(R.drawable.ic_baseline_no_photography_121);
+                    String noimg="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg";
+                    Glide.with(getContext()).load(noimg)
+                            .apply(new RequestOptions().override(200, 200)).into(binding.avatarBtn);
                 }
                 binding.avatarBtn.setOnClickListener(v -> goToSetAvatarFragment());
 

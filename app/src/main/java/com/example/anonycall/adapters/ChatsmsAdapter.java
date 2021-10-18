@@ -56,7 +56,6 @@ public class ChatsmsAdapter extends RecyclerView.Adapter<ChatsmsAdapter.MyHolder
             holder.txtSMS2.setVisibility(View.GONE);
             holder.txtSMS.setText(arrayList.get(position).getMes());
         }
-
     }
 
     @Override

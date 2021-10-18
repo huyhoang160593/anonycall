@@ -15,6 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.anonycall.MainActivity;
 import com.example.anonycall.R;
 import com.example.anonycall.adapters.ChatsmsAdapter;
@@ -34,9 +43,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChatWithFriendFragment extends Fragment {
     private FragmentChatWithFriendBinding binding;
@@ -46,6 +59,8 @@ public class ChatWithFriendFragment extends Fragment {
     private DatabaseReference mesRef,mRef;
     private ChatsmsAdapter adapter;
     static ArrayList<ChatMsg> list = new ArrayList<>();
+    String url="https://fcm.googleapis.com/fcm/send";
+    RequestQueue requestQueue;
     public ChatWithFriendFragment() {
         // Required empty public constructor
     }
@@ -71,8 +86,7 @@ public class ChatWithFriendFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((MainActivity) requireActivity()).hidingBottomNavigation(true);
-
-        binding.frImg.setImageURI(Uri.parse(FrAvt));
+        Glide.with(getContext()).load(FrAvt).apply(new RequestOptions().override(100, 100)).into(binding.frImg);
         binding.frName.setText(FrName);
         LoadSMS();
         binding.back.setOnClickListener(view1 -> goBackToContact());
@@ -82,6 +96,7 @@ public class ChatWithFriendFragment extends Fragment {
                 SendSMS();
             }
         });
+        requestQueue = Volley.newRequestQueue(getContext());
     }
 
     private void goBackToContact() {
@@ -105,12 +120,50 @@ public class ChatWithFriendFragment extends Fragment {
             }
             mesRef.child(mesID).push().updateChildren(hashMap).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
+                    sendNotification(msg);
                     Toast.makeText(getContext(), "Đã gửi", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(e -> Toast.makeText(getContext(), "Không gửi được tin nhắn,hãy thử lại", Toast.LENGTH_SHORT).show());
 
             //clear
             binding.inputMsg.setText("");
+        }
+    }
+
+    private void sendNotification(String msg) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("to","topics"+FrID);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("title","Message from"+FrName);
+            jsonObject1.put("body",msg);
+            jsonObject.put("notification",jsonObject1);
+            JsonObjectRequest request = new JsonObjectRequest(com.android.volley.Request.Method.POST,url, jsonObject
+                    , new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+
+                    Map<String,String> map = new HashMap<>();
+                    map.put("content-type","application/json");
+                    map.put("authorization","key=AAAAxcc5ASc:APA91bF3rdlsFKE5i1zvbtHBd6bk7YLJrnswg2zAW37LYjYsNmkpaVC09T7lpJ29Aeu1gKQh_qkEYO-u71LxFU8OlBhC0LY2P0zQ_sUQi41LJdufw1A4xJ8kfOG2bULYCqVTvYD86LPG");
+
+
+                    return map;
+                }
+            };
+            requestQueue.add(request);
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 

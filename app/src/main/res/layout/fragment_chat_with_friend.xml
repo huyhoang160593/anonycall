@@ -49,7 +49,7 @@
         android:layout_below="@+id/useer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:background="#32000000"
+        android:background="@drawable/bgr"
         tools:listitem="@layout/singleview_msg" />
     <LinearLayout
         android:id="@+id/edid_msg"

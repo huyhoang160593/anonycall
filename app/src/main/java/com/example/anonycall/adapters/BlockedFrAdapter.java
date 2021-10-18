@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.anonycall.R;
 import com.example.anonycall.models.FBUser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,7 +52,8 @@ public class BlockedFrAdapter extends RecyclerView.Adapter<BlockedFrAdapter.MyHo
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         holder.txtName.setText(listFriends.get(position).getDisplayName());
-        holder.imgFr.setImageURI(Uri.parse(listFriends.get(position).getAvatarURL()));
+        Glide.with(mContext).load(listFriends.get(position).getAvatarURL())
+                .apply(new RequestOptions().override(100, 100)).into(holder.imgFr);
         String id = listFriends.get(position).getUserID();
         holder.unblock.setOnClickListener(new View.OnClickListener() {
             @Override

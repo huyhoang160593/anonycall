@@ -15,6 +15,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.anonycall.R;
 import com.example.anonycall.fragments.ChatWithFriendFragment;
 import com.example.anonycall.models.FBUser;
@@ -56,7 +58,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyHolder
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         holder.txtName.setText(listFriends.get(position).getDisplayName());
-        holder.imgFr.setImageURI(Uri.parse(listFriends.get(position).getAvatarURL()));
+        Glide.with(mContext).load(listFriends.get(position).getAvatarURL())
+                .apply(new RequestOptions().override(100, 100)).into(holder.imgFr);
         FBUser mUser = listFriends.get(position);
         String id = listFriends.get(position).getUserID();
         String avt = listFriends.get(position).getAvatarURL();

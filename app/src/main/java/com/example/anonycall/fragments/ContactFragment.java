@@ -6,9 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,22 +35,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.collection.LLRBNode;
+import com.google.firebase.database.core.Tag;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class ContactFragment extends Fragment {
+    private final String TAG = "ContactFragment";
     private FragmentContactBinding binding;
-    private FirebaseAuth auth;
+    private FirebaseAuth auth=FirebaseAuth.getInstance();;
     private FirebaseUser user;
-    private DatabaseReference userRef,friendRef,requestRef,blockRef,mRef;
-    private StorageReference storageRef;
+    private DatabaseReference userRef,friendRef,requestRef,blockRef;
     static ArrayList<FBUser> list= new ArrayList<>();
     private FriendsAdapter friendsAdapter;
     private RequestAdapter requestAdapter;
@@ -73,58 +73,53 @@ public class ContactFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ((MainActivity) requireActivity()).hidingBottomNavigation(false);
+        user = auth.getCurrentUser();
+        if(user == null){
+            Log.e(TAG,"User now is null");
+            Toast.makeText(requireContext(),"Bạn cần phải đăng nhập mới được dùng tính năng này",Toast.LENGTH_LONG).show();
+            backToWelcomeFragment();
+        } else {
+            FirebaseMessaging.getInstance().subscribeToTopic(user.getUid());
+        }
+        binding.searchBtn.setOnClickListener(view14 -> {
+            if (binding.searchText.getText().toString().matches(""))
+                Toast.makeText(requireContext(),"Hãy nhập tên của bạn bè",Toast.LENGTH_SHORT).show();
+            else {
 
-        LoadRequestList("");
-        binding.searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (binding.searchText.getText().toString().matches(""))
-                    Toast.makeText(getContext(),"Hãy nhập tên của bạn bè",Toast.LENGTH_SHORT).show();
-                else {
-
-                    if (binding.searchText.getText().toString().contains("@gmail.com")){
-                        System.out.println("Search email");
-                        searchByEmail(binding.searchText.getText().toString());
-                        binding.searchText.setText("");
-                    }else {
-                        searchByName(binding.searchText.getText().toString());
-                        binding.searchText.setText("");
-                    }
-
+                if (binding.searchText.getText().toString().contains("@gmail.com")){
+                    System.out.println("Search email");
+                    searchByEmail(binding.searchText.getText().toString());
+                }else {
+                    searchByName(binding.searchText.getText().toString());
                 }
+                binding.searchText.setText("");
+
             }
         });
-        binding.totalFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoadFriendsList("");
-                binding.totalFriend.setBackgroundColor(Color.GRAY);
-                binding.friendRequest.setBackgroundColor(Color.TRANSPARENT);
-                binding.blockedPeople.setBackgroundColor(Color.TRANSPARENT);
-            }
+        binding.totalFriend.setOnClickListener(view1 -> {
+            LoadFriendsList("");
+            binding.totalFriend.setBackgroundColor(Color.GRAY);
+            binding.friendRequest.setBackgroundColor(Color.TRANSPARENT);
+            binding.blockedPeople.setBackgroundColor(Color.TRANSPARENT);
         });
-        binding.friendRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoadRequestList("");
-                binding.totalFriend.setBackgroundColor(Color.TRANSPARENT);
-                binding.friendRequest.setBackgroundColor(Color.GRAY);
-                binding.blockedPeople.setBackgroundColor(Color.TRANSPARENT);
-            }
+        binding.friendRequest.setOnClickListener(view12 -> {
+            LoadRequestList("");
+            binding.totalFriend.setBackgroundColor(Color.TRANSPARENT);
+            binding.friendRequest.setBackgroundColor(Color.GRAY);
+            binding.blockedPeople.setBackgroundColor(Color.TRANSPARENT);
         });
-        binding.blockedPeople.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoadBlockedList("");
-                binding.totalFriend.setBackgroundColor(Color.TRANSPARENT);
-                binding.friendRequest.setBackgroundColor(Color.TRANSPARENT);
-                binding.blockedPeople.setBackgroundColor(Color.GRAY);
-            }
+        binding.blockedPeople.setOnClickListener(view13 -> {
+            LoadBlockedList("");
+            binding.totalFriend.setBackgroundColor(Color.TRANSPARENT);
+            binding.friendRequest.setBackgroundColor(Color.TRANSPARENT);
+            binding.blockedPeople.setBackgroundColor(Color.GRAY);
         });
 
+    }
+
+    private void backToWelcomeFragment() {
+        Navigation.findNavController(requireView()).navigate(ContactFragmentDirections.actionContactFragmentToWelcomeFragment());
     }
 
     private void searchByEmail(String email) {
@@ -140,7 +135,8 @@ public class ContactFragment extends Fragment {
                     CheckBlocked(mUser);
                 }else{
                     Toast.makeText(getContext(),"Địa chỉ email chưa đăng kí",Toast.LENGTH_SHORT).show();
-                }            }
+                }
+            }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -255,7 +251,6 @@ public class ContactFragment extends Fragment {
         auth= FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        storageRef = FirebaseStorage.getInstance().getReference().child("user");
         HashMap hashMap = new HashMap();
         hashMap.put("displayName",user.getDisplayName());
         hashMap.put("email",user.getEmail());

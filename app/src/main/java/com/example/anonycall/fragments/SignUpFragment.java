@@ -20,12 +20,26 @@ import android.widget.Toast;
 import com.example.anonycall.R;
 import com.example.anonycall.databinding.SignUpFragmentBinding;
 import com.example.anonycall.viewModels.UserViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
 
 public class SignUpFragment extends Fragment {
     private final String TAG = "SignUpFragment";
 
     private UserViewModel mUserViewModel;
     private SignUpFragmentBinding binding;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private DatabaseReference userRef;
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
@@ -108,6 +122,7 @@ public class SignUpFragment extends Fragment {
             }
 
             mUserViewModel.signupWithEmail(nicknameString,emailString,passwordString);
+            addUser();
 
         }catch (NullPointerException ex){
             Log.e(TAG, "NullPointerException Raise: ", ex);
@@ -119,6 +134,27 @@ public class SignUpFragment extends Fragment {
             binding.signUpButton.setEnabled(true);
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+    private void addUser(){
+        auth= FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        HashMap hashMap = new HashMap();
+        hashMap.put("displayName",user.getDisplayName());
+        hashMap.put("email",user.getEmail());
+        hashMap.put("avatarURL","https://icon-library.com/images/no-user-image-icon/no-user-image-icon-0.jpg");
+        hashMap.put("userID",user.getUid());
+        userRef.child(user.getUid()).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                Toast.makeText(getContext(),"complete",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(),"failure",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void goToLoginFragment() {

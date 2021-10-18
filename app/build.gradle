@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-database:20.0.2'
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-messaging-directboot:22.0.0'
 
     //WebRTC
     implementation 'org.webrtc:google-webrtc:1.0.32006'
@@ -67,6 +68,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     implementation 'org.chromium.net:cronet-embedded:76.3809.111'
+
+    //load img
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.android.volley:volley:1.2.1'
 
     //Biometric
     def biometric_version = '1.0.0'

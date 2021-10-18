@@ -119,7 +119,7 @@ public class LoginFragment extends Fragment {
                 final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
                 enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                         BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
-                startActivityForResult(enrollIntent, REQUEST_CODE);
+                //startActivityForResult(enrollIntent, REQUEST_CODE); //com men gì ă
                 break;
         }
 

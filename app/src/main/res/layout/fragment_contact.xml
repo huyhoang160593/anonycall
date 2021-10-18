@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="Thêm bạn mới"
             />
         <ImageButton
             android:id="@+id/search_btn"
@@ -68,7 +69,6 @@
 
             />
     </LinearLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_contact"
